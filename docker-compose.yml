@@ -1,0 +1,16 @@
+services:
+  anubis:
+    image: ghcr.io/techarohq/anubis:latest
+    environment:
+      BIND: ":8080"
+      DIFFICULTY: "4"
+      METRICS_BIND: ":9090"
+      SERVE_ROBOTS_TXT: "true"
+      TARGET: "http://app:3000"
+      POLICY_FNAME: "/data/cfg/botPolicy.yaml"
+      OG_PASSTHROUGH: "true"
+      OG_EXPIRY_TIME: "24h"
+    ports:
+      - <<YOUR_PORT_HERE>>:8080
+    volumes:
+      - "./botPolicy.yaml:/data/cfg/botPolicy.yaml"
