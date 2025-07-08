@@ -8,7 +8,13 @@ const styleCss = await fs.promises.readFile("./app/style.css");
 
 Bun.serve({
   port: 3000,
-  development: true,
+  development: process.env.NODE_ENV !== "production" && {
+    // Enable browser hot reloading in development
+    hmr: true,
+
+    // Echo console logs from the browser to the server
+    console: true,
+  },
   routes: {
     "/": indexFile,
     "/style.css": () => {

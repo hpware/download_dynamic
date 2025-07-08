@@ -2,9 +2,13 @@ import "../css/main.css";
 export default function Layout({
   page,
   title,
+  scriptTags,
+  jsCode,
 }: {
   page: React.ReactNode;
   title?: string;
+  scriptTags?: any;
+  jsCode?: string;
 }) {
   return (
     <html>
@@ -20,6 +24,13 @@ export default function Layout({
             &copy; {new Date().getFullYear()}
           </span>
         </footer>
+        {scriptTags &&
+          scriptTags.map((url: any, index: number) => (
+            <script key={index} src={url}></script>
+          ))}
+        {jsCode && (
+          <script dangerouslySetInnerHTML={{ __html: jsCode }}></script>
+        )}
       </body>
     </html>
   );

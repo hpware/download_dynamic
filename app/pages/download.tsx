@@ -34,9 +34,9 @@ export default async function Export({
   console.log(uuid);
   const findFile = await sql`
     SELECT * FROM file
-    WHERE urlpath = ${pathname}
+    WHERE path = ${pathname}
     `;
-  if (findFile.length > 0) {
+  if (findFile.length === 0) {
     return <Layout page={<FileNotFound />} title="Cannot find this file!" />;
   }
   return <Layout page={<Page pathname={pathname} />} title="Download a file" />;

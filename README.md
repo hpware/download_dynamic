@@ -1,25 +1,32 @@
 # LJADS
+
 Introducting LJADS, a awesome easy download system that includes time limits. (And a basic anubis setup to prevent bots, also, you can turn on captchas!)
 
 ## The stack:
+
 - Bun
 - Postgres
 - React
 - TailwindCSS
 
 ## Self host it!
+
 psst, if you are on Windows, please install curl and add .exe to each command, or else Windows will just use Invoke-WebRequest instead of curl.
+
 ### Pull the docker compose file
+
 ```bash
 curl -O  https://raw.githubusercontent.com/hpware/download_dynamic/refs/heads/master/docker-compose.yml
 ```
 
 ### Pull the anubis config
+
 ```bash
 curl https://raw.githubusercontent.com/hpware/download_dynamic/refs/heads/master/anubis_botPolicy.yaml --output botPolicy.yaml
 ```
 
 ### Generate .env Values
+
 For Mac/Linux
 
 ```bash
@@ -37,6 +44,7 @@ Add-Content -Path ".env" -Value "POSTGRES_DB=main"
 ```
 
 If you want to add captchas, this feature is still in beta, add with caution.
+
 ```bash
 echo ENABLE_CAPTCHA=true >> ./.env
 ```
