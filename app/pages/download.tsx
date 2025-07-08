@@ -1,5 +1,4 @@
 import Layout from "../layouts/main";
-import { useEffect } from "react";
 import sql from "../pg";
 import FileNotFound from "./FileNotFound";
 
@@ -13,7 +12,10 @@ function Page({ pathname }: { pathname: string }) {
       </h3>
       <p>You have done a basic bot check, you can now download the file :)</p>
       <span>
-        <button className="p-2 bg-gray-200 hover:cursor-pointer hover:bg-gray-400 duration-200 transform-all rounded">
+        <button
+          className="p-2 bg-gray-200 hover:cursor-pointer hover:bg-gray-400 duration-200 transform-all rounded"
+          id="download_button"
+        >
           Create download link
         </button>
       </span>
@@ -37,7 +39,19 @@ export default async function Export({
     WHERE path = ${pathname}
     `;
   if (findFile.length === 0) {
-    return <Layout page={<FileNotFound />} title="Cannot find this file!" />;
+    return (
+      <Layout
+        page={<FileNotFound />}
+        title="Cannot find this file!"
+        scriptTags={["/_client_js/userinfo.js", "/_client_js/fileNotFound.js"]}
+      />
+    );
   }
-  return <Layout page={<Page pathname={pathname} />} title="Download a file" />;
+  return (
+    <Layout
+      page={<Page pathname={pathname} />}
+      title="Download a file"
+      scriptTags={["/_client_js/userinfo.js", "/_client_js/download.js"]}
+    />
+  );
 }

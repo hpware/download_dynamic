@@ -6,6 +6,21 @@ console.log(`The app is currently running at port 3000`);
 
 const styleCss = await fs.promises.readFile("./app/style.css");
 
+const clientJsFilesUrlArray: any[] = [];
+for (const file of await fs.promises.readdir("./app/client_js")) {
+  if (file.endsWith(".js")) {
+    const filePath = `./app/client_js/${file}`;
+    clientJsFilesUrlArray[`/_client_js/${file}`] = async () => {
+      const content = await fs.promises.readFile(filePath, "utf-8");
+      return new Response(content, {
+        headers: {
+          "Content-Type": "text/javascript",
+        },
+      });
+    };
+  }
+}
+
 Bun.serve({
   port: 3000,
   development: process.env.NODE_ENV !== "production" && {
@@ -17,13 +32,14 @@ Bun.serve({
   },
   routes: {
     "/": indexFile,
-    "/style.css": () => {
+    "/_style.css": () => {
       return new Response(styleCss, {
         headers: {
           "Content-Type": "text/css",
         },
       });
     },
+    ...clientJsFilesUrlArray,
     "/download/:uuid/:dlid": async (req: Request) => {
       const url = new URL(req.url);
       const { uuid: uuidSlug, dlid } = req.params;

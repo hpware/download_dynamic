@@ -5,7 +5,7 @@ export default function FileNotFound() {
       <h1 className="text-xl">
         The file that you are trying to find does not exist.
       </h1>
-      <button onClick={() => window.history.back}>Go Back</button>
+      <button id="back_button">Go Back</button>
     </div>
   );
 }
