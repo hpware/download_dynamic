@@ -7,12 +7,14 @@
     "start": "bun run app/index.tsx"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "tailwindcss": "^4.1.11"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
+    "bun-plugin-tailwind": "^0.0.15",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   }

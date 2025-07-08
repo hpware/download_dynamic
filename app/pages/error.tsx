@@ -9,13 +9,11 @@ function Page({ pathname }: { pathname: string }) {
         <i>Download the file</i>
       </h3>
       <button>Create download link</button>
-      <p>Note: This download link will expire after 12 hours.</p>
+      <span>Note: This download link will expire after 12 hours.</span>
     </div>
   );
 }
 
 export default function Export({ pathname }: { pathname: string }) {
-  return (
-    <Layout page={<Page pathname={pathname} title={`Download a file`} />} />
-  );
+  return <Layout page={<Page pathname={pathname} />} />;
 }

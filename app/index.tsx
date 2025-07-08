@@ -1,25 +1,27 @@
-import fs from "fs";
-const indexFile = await fs.promises.readFile("app/html/index.html");
-const errorFile = await fs.promises.readFile("app/html/error.html");
 import { renderToReadableStream } from "react-dom/server";
+import indexFile from "./html/index.html";
 import DownloadPage from "./pages/download";
 console.log(`The app is currently running at port 3000`);
 Bun.serve({
   port: 3000,
   development: true,
   routes: {
-    "/": () => {
-      return new Response(indexFile, {
-        headers: {
-          "Content-Type": "text/html",
-        },
-      });
-    },
-    "/download/:uuid": async (req: Request) => {
-      const { uuid: uuidSlug } = req.params;
+    "/": indexFile,
+    "/download/:uuid/:dlid": async (req: Request) => {
+      const url = new URL(req.url);
+      const { uuid: uuidSlug, dlid } = req.params;
+
+      if (
+        !uuidSlug.match(
+          /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
+        )
+      ) {
+        return new Response("Invalid UUID format", { status: 400 });
+      }
+
       const fileName = "fileName";
       const fileType = "text/html";
-      return new Response(indexFile, {
+      return new Response("Hello", {
         headers: {
           "Content-Type": `${fileType}`,
           "Content-Disposition": `attachment; filename="${fileName}"`,
@@ -37,9 +39,7 @@ Bun.serve({
           headers: { "Content-Type": "text/html" },
         });
       } catch (e) {
-        return new Response(errorFile, {
-          headers: { "Content-Type": "text/html" },
-        });
+        return new Response("Internal Server Error", { status: 500 });
       }
     },
   },
