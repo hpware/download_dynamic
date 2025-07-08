@@ -43,8 +43,10 @@ Bun.serve({
       try {
         const url = new URL(req.url);
         const pathname = url.pathname.replace("/", "");
+        const searchParams = url.searchParams;
+        const uuid = searchParams.get("uuid");
         const stream = await renderToReadableStream(
-          <DownloadPage pathname={pathname} />,
+          <DownloadPage pathname={pathname} uuidMode={uuid} />,
         );
         await stream.allReady;
 

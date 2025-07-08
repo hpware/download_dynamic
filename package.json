@@ -4,8 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "start": "bun run app/index.tsx",
-    "style:generate": "bunx @tailwindcss/cli -i ./app/css/main.css -o ./app/style.css"
+    "service:start": "bun run app/index.tsx",
+    "db:create": "bun run app/create_database.ts",
+    "styles:generate": "bunx @tailwindcss/cli -i ./app/css/main.css -o ./app/style.css"
   },
   "devDependencies": {
     "@types/bun": "latest",
