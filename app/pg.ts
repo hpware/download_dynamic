@@ -1,5 +1,5 @@
 import { SQL } from "bun";
-export const db = new SQL({
+const db = new SQL({
   url: process.env.POSTGRES_URL,
   onconnect: (client) => {
     console.log("Connected to database");
@@ -8,3 +8,5 @@ export const db = new SQL({
     console.log("Connection closed");
   },
 });
+
+export default db;

@@ -1,12 +1,23 @@
 import { renderToReadableStream } from "react-dom/server";
 import indexFile from "./html/index.html";
 import DownloadPage from "./pages/download";
+import fs from "fs";
 console.log(`The app is currently running at port 3000`);
+
+const styleCss = await fs.promises.readFile("./app/style.css");
+
 Bun.serve({
   port: 3000,
   development: true,
   routes: {
     "/": indexFile,
+    "/style.css": () => {
+      return new Response(styleCss, {
+        headers: {
+          "Content-Type": "text/css",
+        },
+      });
+    },
     "/download/:uuid/:dlid": async (req: Request) => {
       const url = new URL(req.url);
       const { uuid: uuidSlug, dlid } = req.params;
@@ -35,8 +46,12 @@ Bun.serve({
         const stream = await renderToReadableStream(
           <DownloadPage pathname={pathname} />,
         );
+        await stream.allReady;
+
         return new Response(stream, {
-          headers: { "Content-Type": "text/html" },
+          headers: {
+            "Content-Type": "text/html",
+          },
         });
       } catch (e) {
         return new Response("Internal Server Error", { status: 500 });

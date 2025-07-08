@@ -4,18 +4,24 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "start": "bun run app/index.tsx"
+    "start": "bun run app/index.tsx",
+    "style:generate": "bunx @tailwindcss/cli -i ./app/css/main.css -o ./app/style.css"
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
     "tailwindcss": "^4.1.11"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
+    "@tailwindcss/cli": "^4.1.11",
     "bun-plugin-tailwind": "^0.0.15",
+    "lucide-react": "^0.525.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "uuid": "^11.1.0"
   }
 }
