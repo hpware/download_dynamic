@@ -2,6 +2,10 @@ import Layout from "../layouts/main";
 import sql from "../pg";
 import FileNotFound from "./FileNotFound";
 
+const ENABLE_CAPTCHA = process.env.ENABLE_CAPTCHA;
+const CF_SITEKEY =
+  ENABLE_CAPTCHA === "true" ? process.env.CF_TURNSTILE_SITE_KEY : "";
+
 function Page({ pathname }: { pathname: string }) {
   return (
     <div className="flex flex-col">
@@ -10,6 +14,13 @@ function Page({ pathname }: { pathname: string }) {
       <h3>
         <i>Download the file</i>
       </h3>
+      {ENABLE_CAPTCHA === "true" && (
+        <div
+          className="cf-turnstile"
+          data-sitekey={CF_SITEKEY}
+          data-callback="/_cf_turnstile/srchk"
+        ></div>
+      )}
       <p>You have done a basic bot check, you can now download the file :)</p>
       <span>
         <button
@@ -51,7 +62,11 @@ export default async function Export({
     <Layout
       page={<Page pathname={pathname} />}
       title="Download a file"
-      scriptTags={["/_client_js/userinfo.js", "/_client_js/download.js"]}
+      scriptTags={[
+        "https://challenges.cloudflare.com/turnstile/v0/api.js",
+        "/_client_js/userinfo.js",
+        "/_client_js/download.js",
+      ]}
     />
   );
 }

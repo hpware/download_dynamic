@@ -1,19 +1,18 @@
-import Layout from "../layouts/main";
+import "../css/main.css";
 
-function Page({ pathname }: { pathname: string }) {
+export default function Export() {
   return (
-    <div>
-      <h1 className="">{pathname}</h1>
-      <hr />
-      <h3>
-        <i>Download the file</i>
-      </h3>
-      <button>Create download link</button>
-      <span>Note: This download link will expire after 12 hours.</span>
-    </div>
+    <html>
+      <head>
+        <title>Oops! You have found an error!</title>
+        <link rel="stylesheet" href="/_style.css" />
+        <meta charSet="UTF-8" />
+      </head>
+      <body>
+        <div class="absolute inset-0 flex flex-col justify-center text-center text-lg">
+          <span>This error can be reported to the owner's email address.</span>
+        </div>
+      </body>
+    </html>
   );
-}
-
-export default function Export({ pathname }: { pathname: string }) {
-  return <Layout page={<Page pathname={pathname} />} />;
 }

@@ -1,24 +1,12 @@
 services:
-  anubis:
-    image: ghcr.io/techarohq/anubis:latest
-    environment:
-      BIND: ":8080"
-      DIFFICULTY: "4"
-      METRICS_BIND: ":9090"
-      SERVE_ROBOTS_TXT: "true"
-      TARGET: "http://app:3000"
-      POLICY_FNAME: "/data/cfg/botPolicy.yaml"
-      OG_PASSTHROUGH: "true"
-      OG_EXPIRY_TIME: "24h"
-    ports:
-      - <<YOUR_PORT_HERE>>:8080
-    volumes:
-      - "./botPolicy.yaml:/data/cfg/botPolicy.yaml"
+  # REQUIRED
   app:
     image: ghcr.io/hpware/download_dynamic:latest
     environment:
       POSTGRES_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-downloads}
+      # OPTIONAL CAPTCHA SUPPORT, PLEASE ADD YOUR CF TURNSTILE KEY.
       ENABLE_CAPTCHA: ${ENABLE_CAPTCHA:-false}
+      CF_TURNSTILE_:
     volumes:
       - "./data:/app/data"
     depends_on:
@@ -32,8 +20,6 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-downloads}
     volumes:
       - ./pg_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
     healthcheck:
       test:
         [
@@ -43,3 +29,31 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  # OPTIONAL (RECOMMENDED): ANUBIS PROTECTION
+  # PLEASE PULL DOWN THE anubis_botPolicy.yaml file from the repo, and rename it to botPolicy.yaml.
+  anubis:
+    image: ghcr.io/techarohq/anubis:latest
+    environment:
+      BIND: ":8080"
+      DIFFICULTY: "4"
+      METRICS_BIND: ":9090"
+      SERVE_ROBOTS_TXT: "true"
+      TARGET: "http://app:3000"
+      POLICY_FNAME: "/data/cfg/botPolicy.yaml"
+      OG_PASSTHROUGH: "true"
+      OG_EXPIRY_TIME: "24h"
+    # IF YOU ARE USING CF ZERO TRUST, YOU CAN DELETE THE PORTS PART OF THE CODE
+    ports: # HERE
+      - <<YOUR_PORT_HERE>>:8080 # AND HERE
+    volumes:
+      - "./botPolicy.yaml:/data/cfg/botPolicy.yaml"
+    depends_on:
+      app:
+        condition: "service_started"
+  # OPTIONAL: CLOUDFLARE ZERO TRUST
+  # PLEASE USE `echo "CLOUDFLARED_TOKEN=YOUR_CLOUDFLARE_TUNNEL_SECRET" >> ./.env` to import your tunnel secret.
+  # ON THE DASHBOARD, CF WILL ASK YOU FOR THE URL, ENTER ANUBIS:8080 IF YOU HAVE ANUBIS, IF YOU DON'T, ENTER APP:3000
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: always
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARED_TOKEN}

@@ -18,6 +18,10 @@ export default function Layout({
         <meta charSet="UTF-8" />
       </head>
       <body>
+        <header className="p-2 m-2">
+          <h1 className="text-2xl">Download 📥</h1>
+          <hr className="justify-center m-auto w-[80vw]" />
+        </header>
         <main>{page}</main>
         <footer>
           <span className="text-xs ml-2">
