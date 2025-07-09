@@ -6,13 +6,11 @@ const ENABLE_CAPTCHA = process.env.ENABLE_CAPTCHA;
 const CF_SITEKEY =
   ENABLE_CAPTCHA === "true" ? process.env.CF_TURNSTILE_SITE_KEY : "";
 
-function Page({ pathname }: { pathname: string }) {
+function Page({ fileSQL }: { fileSQL: any }) {
   return (
     <div className="flex flex-col">
-      <h1 className="">{pathname}</h1>
-      <hr />
       <h3>
-        <i>Download the file</i>
+        Download the file <i>{fileSQL.file_name}</i>
       </h3>
       {ENABLE_CAPTCHA === "true" && (
         <div
@@ -21,7 +19,6 @@ function Page({ pathname }: { pathname: string }) {
           data-callback="/_cf_turnstile/srchk"
         ></div>
       )}
-      <p>You have done a basic bot check, you can now download the file :)</p>
       <span>
         <button
           className="p-2 bg-gray-200 hover:cursor-pointer hover:bg-gray-400 duration-200 transform-all rounded"
@@ -54,18 +51,18 @@ export default async function Export({
       <Layout
         page={<FileNotFound />}
         title="Cannot find this file!"
-        scriptTags={["/_client_js/userinfo.js", "/_client_js/fileNotFound.js"]}
+        scriptTags={["/_client_js/userinfo.js", `/_client_js/fileNotFound.js`]}
       />
     );
   }
   return (
     <Layout
-      page={<Page pathname={pathname} />}
+      page={<Page fileSQL={findFile[0]} />}
       title="Download a file"
       scriptTags={[
         "https://challenges.cloudflare.com/turnstile/v0/api.js",
         "/_client_js/userinfo.js",
-        "/_client_js/download.js",
+        `/_client_js/download.js?file=${findFile[0].uuid}&dl=${findFile[0].download_uuid}`,
       ]}
     />
   );

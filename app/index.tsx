@@ -1,6 +1,7 @@
 import { renderToReadableStream } from "react-dom/server";
 import indexFile from "./html/index.html";
 import DownloadPage from "./pages/download";
+import cf_turnstile_servercheck from "./cf/turnstile/serverCheck";
 import fs from "fs";
 console.log(`The app is currently running at port 3000`);
 
@@ -36,6 +37,14 @@ Bun.serve({
       return new Response(styleCss, {
         headers: {
           "Content-Type": "text/css",
+        },
+      });
+    },
+    "/_cf_turnstile/srchk": async () => {
+      const result = await cf_turnstile_servercheck();
+      return new Response(result, {
+        headers: {
+          "Content-Type": "application/json",
         },
       });
     },

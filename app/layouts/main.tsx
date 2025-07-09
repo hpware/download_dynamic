@@ -1,4 +1,9 @@
 import "../css/main.css";
+
+const COPYRIGHT_OWNER =
+  process.env.COPYRIGHT_OWNER === undefined
+    ? "Respected Owners"
+    : process.env.COPYRIGHT_OWNER;
 export default function Layout({
   page,
   title,
@@ -25,7 +30,7 @@ export default function Layout({
         <main>{page}</main>
         <footer>
           <span className="text-xs ml-2">
-            &copy; {new Date().getFullYear()}
+            &copy; {new Date().getFullYear()} {COPYRIGHT_OWNER}
           </span>
         </footer>
         {scriptTags &&
