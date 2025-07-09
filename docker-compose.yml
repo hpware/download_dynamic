@@ -9,6 +9,8 @@ services:
       CF_TURNSTILE_:
     volumes:
       - "./data:/app/data"
+      # BYO HTML INDEX FILE
+      #- "./index.html:/app/html/index.html"
     depends_on:
       postgres:
         condition: service_healthy

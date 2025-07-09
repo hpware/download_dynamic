@@ -12,6 +12,7 @@ const currentUserString = localStorage.getItem("userString");
 
 async function submitDownloadRequest() {
   try {
-    const buildUrl = `/download/${downloadUuid}/${"id"}?usr=${currentUserString}&fu=${fileUuid}`;
+    const downloadAuthUrl = "";
+    const buildUrl = `/download/${downloadUuid}/${downloadAuthUrl}?usr=${currentUserString}&fact=${fileUuid}`;
   } catch (e) {}
 }
