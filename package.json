@@ -6,7 +6,9 @@
   "scripts": {
     "service:start": "bun run app/index.tsx",
     "db:create": "bun run app/create_database.ts",
-    "styles:generate": "bunx @tailwindcss/cli -i ./app/css/main.css -o ./app/style.css"
+    "styles:generate": "bunx @tailwindcss/cli -i ./app/css/main.css -o ./app/style.css",
+    "scripts:getcurrentyear": "bun run scripts/getCurrentYear.ts",
+    "scripts:optimize": "bash ./scripts/optimize.sh"
   },
   "devDependencies": {
     "@types/bun": "latest",
@@ -23,6 +25,7 @@
     "lucide-react": "^0.525.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "uglify-js": "^3.19.3",
     "uuid": "^11.1.0"
   }
 }
