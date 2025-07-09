@@ -6,6 +6,8 @@ const ENABLE_CAPTCHA = process.env.ENABLE_CAPTCHA;
 const CF_SITEKEY =
   ENABLE_CAPTCHA === "true" ? process.env.CF_TURNSTILE_SITE_KEY : "";
 
+const clientDownloadLimit = process.env.CLIENT_DOWNLOAD_LIMIT_HR || "none";
+
 function Page({ fileSQL }: { fileSQL: any }) {
   return (
     <div className="flex flex-col">
@@ -27,9 +29,11 @@ function Page({ fileSQL }: { fileSQL: any }) {
           Create download link
         </button>
       </span>
+      {/**Error Display*/}
+      <span id="errordiv" className="text-red-600"></span>
       <span className="text-gray-500">
-        <i>Note: This download link will expire after 12 hours.</i>
-      </span>
+        <i>Note: This download link will expire after 12 hours. {clientDownloadLimit !== "none" && `and each client can only create ${clientDownloadLimit} links per day`}</i>
+      </span>>
     </div>
   );
 }
@@ -62,7 +66,7 @@ export default async function Export({
       scriptTags={[
         "https://challenges.cloudflare.com/turnstile/v0/api.js",
         "/_client_js/userinfo.js",
-        `/_client_js/download.js?file=${findFile[0].uuid}&dl=${findFile[0].download_uuid}`,
+        `/_client_js/download.js?file=${findFile[0].uuid}&dl=${findFile[0].download_uuid}&captcha=${ENABLE_CAPTCHA === "true" ? "true" : "false"}`,
       ]}
     />
   );
