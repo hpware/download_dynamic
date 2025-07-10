@@ -22,6 +22,19 @@ export default function Layout({
         <link rel="stylesheet" href="/_style.css" />
         <meta charSet="UTF-8" />
       </head>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+          /**
+            * COPYRIGHT ${new Date().getFullYear()}
+            * WRITEN BY @hpware on GitHub, CONTENT IS NOT OWNED TO THE PERSON WHO WROTE THE SOFTWARE.
+            * THIS WEBSITE IS OWNED BY ${COPYRIGHT_OWNER}, AND ALL LIBILLTY GOES TO THE COPYTIGHT OWNER. IF IT USES THE PLACEHOLDER "Respected Owners", DO NOT CONTACT THE PERSON WHO WROTE THIS, HE HAS NO IDEA EITHER
+            * THIS PLATFORM / SOFTWARE IS LICENSED UNDER MIT
+            * Writen using Bun & Postgres.
+          */
+          `,
+        }}
+      ></script>
       <body>
         <header className="p-2 m-2">
           <h1 className="text-2xl">Download 📥</h1>

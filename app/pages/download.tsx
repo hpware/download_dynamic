@@ -1,6 +1,7 @@
 import Layout from "../layouts/main";
 import sql from "../pg";
 import FileNotFound from "./FileNotFound";
+import { v4 as uuidv4 } from "uuid";
 
 const ENABLE_CAPTCHA = process.env.ENABLE_CAPTCHA;
 const CF_SITEKEY =
@@ -8,7 +9,12 @@ const CF_SITEKEY =
 
 const clientDownloadLimit = process.env.CLIENT_DOWNLOAD_LIMIT_HR || "none";
 
+function startDownload() {
+  console.log(CF_SITEKEY);
+}
+
 function Page({ fileSQL }: { fileSQL: any }) {
+  const genId = uuidv4();
   return (
     <div className="flex flex-col">
       <h3>
@@ -18,13 +24,15 @@ function Page({ fileSQL }: { fileSQL: any }) {
         <div
           className="cf-turnstile"
           data-sitekey={CF_SITEKEY}
-          data-callback="/_cf_turnstile/srchk"
+          data-callback={`/_cf_turnstile/srchk?genId=${genId}`}
+          id="cf_turnstile"
         ></div>
       )}
       <span>
         <button
           className="p-2 bg-gray-200 hover:cursor-pointer hover:bg-gray-400 duration-200 transform-all rounded"
           id="download_button"
+          onClick={startDownload}
         >
           Create download link
         </button>
@@ -32,8 +40,23 @@ function Page({ fileSQL }: { fileSQL: any }) {
       {/**Error Display*/}
       <span id="errordiv" className="text-red-600"></span>
       <span className="text-gray-500">
-        <i>Note: This download link will expire after 12 hours. {clientDownloadLimit !== "none" && `and each client can only create ${clientDownloadLimit} links per day`}</i>
-      </span>>
+        <i>
+          Note: This download link will expire after 12 hours.{" "}
+          {clientDownloadLimit !== "none" &&
+            `and each client can only create ${clientDownloadLimit} links per day`}
+        </i>
+      </span>
+      {/** SEND GENID TO THE CLIENT */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `/**SEND DATA TO CLIENT JS*/
+          const genId = "${genId}";
+          const fileUuid = "${fileSQL.uuid}";
+          const downloadUuid = "${fileSQL.download_uuid}";
+          const captchaEnabled = ${ENABLE_CAPTCHA === "true" ? true : false};
+          `,
+        }}
+      ></script>
     </div>
   );
 }

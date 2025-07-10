@@ -1,22 +1,18 @@
+/** Set dl button action */
+const download_button = document.getElementById("download_button");
+download_button.addEventListener("click", submitDownloadRequest);
+/** Vars */
 const currentJS = document.currentScript.src;
-
 const currentJSURL = new URL(currentJS);
 const currentJSURLParams = new URLSearchParams(currentJSURL.search);
-const fileUuid = currentJSURLParams.get("file");
-const downloadUuid = currentJSURLParams.get("dl");
-const captchaEnabled = currentJSURLParams.get("captcha");
 const fileMessage = document.getElementById("errordiv");
-
+const cfTurnstile33 = document.getElementById("cf-turnstile");
+const currentUserString = localStorage.getItem("userString");
 let turnstileResponse;
-if (captchaEnabled === "true") {
+if (captchaEnabled) {
   turnstileResponse = turnstile.getResponse(widgetId: string);
   console.log(turnstileResponse);
 }
-
-const download_button = document.getElementById("download_button");
-download_button.addEventListener("click", submitDownloadRequest);
-
-const currentUserString = localStorage.getItem("userString");
 
 async function submitDownloadRequest() {
   console.log("Requesting...");
