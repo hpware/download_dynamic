@@ -67,7 +67,7 @@ Bun.serve({
     "/": indexFile,
     "/_current_docker_dir": async () => {
       const command = await $`pwd`;
-      return new Response(command);
+      return new Response(command.text);
     },
     "/_style.css": () => {
       return new Response(styleCss, {
