@@ -48,3 +48,14 @@ If you want to add captchas, this feature is still in beta, add with caution.
 ```bash
 echo ENABLE_CAPTCHA=true >> ./.env
 ```
+
+## BYO INDEX
+You can bring you own index file :)
+```yaml
++  - "./index.html:/app/app/html/index.html"
+```
+an pull
+```bash
+curl https://raw.githubusercontent.com/hpware/download_dynamic/refs/heads/master/custom_html_template.html --output index.html
+```
+to get started!
