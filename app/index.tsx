@@ -2,6 +2,8 @@ import { renderToReadableStream } from "react-dom/server";
 import indexFile from "./html/index.html";
 import DownloadPage from "./pages/download";
 import cf_turnstile_servercheck from "./cf/turnstile/serverCheck";
+import sql from "./pg";
+import createDB from "./create_database";
 import fs from "fs";
 console.log(`The app is currently running at port 3000`);
 
@@ -21,6 +23,29 @@ for (const file of await fs.promises.readdir("./app/client_js")) {
     };
   }
 }
+
+async function checkDatabaseInit() {
+  try {
+    const check = await sql`
+      SELECT EXISTS (
+        SELECT 1
+        FROM information_schema.tables
+        WHERE table_schema = 'public'
+        AND table_name = 'file'
+      ) as exists;
+      `;
+    const exists = check[0]?.exists || false;
+    if (!exists) {
+      console.log("Creating DB");
+      await createDB();
+    }
+  } catch (error) {
+    console.error("Error initializing database:", error);
+    throw error;
+  }
+}
+
+await checkDatabaseInit();
 
 Bun.serve({
   port: 3000,
