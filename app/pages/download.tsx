@@ -26,12 +26,11 @@ function Page({ fileSQL }: { fileSQL: any }) {
     .replaceAll("\n", "")
     .replaceAll("  ", "");
   return (
-    <div className="flex flex-col">
-      <h3 className="flex flex-row">
-        <CloudDownloadIcon className="p-1 w-12 h-12" />
-        &nbsp;&nbsp;Download the file&nbsp;<i>{fileSQL.file_name}</i>
+    <div className="flex flex-col justify-center align-center text-center">
+      <h3 className="flex flex-row text-xl ml-4">
+        <CloudDownloadIcon className="p-1 w-7 h-7" />
+        &nbsp;&nbsp;Download&nbsp;<i>{fileSQL.file_name}</i>
       </h3>
-      <br />
       {ENABLE_CAPTCHA === "true" && (
         <div
           className="cf-turnstile"
@@ -40,17 +39,17 @@ function Page({ fileSQL }: { fileSQL: any }) {
           id="cf_turnstile"
         ></div>
       )}
-      <span>
-        <button
-          className="p-2 bg-gray-200 hover:cursor-pointer hover:bg-gray-400 duration-200 transform-all rounded flex flex-row"
-          id="download_button"
-          onClick={startDownload}
-        >
-          Create download link&nbsp;&nbsp;🔗
-        </button>
-      </span>
+      <button
+        className="p-2 bg-gray-200 m-auto w-fit hover:cursor-pointer hover:bg-gray-400 duration-200 transform-all rounded flex flex-row"
+        id="download_button"
+        onClick={startDownload}
+      >
+        Create download link&nbsp;&nbsp;🔗
+      </button>
       {/**Error Display*/}
-      <span id="errordiv" className="text-red-600"></span>
+      <span id="errordiv" className="text-red-600">
+        {"  "}
+      </span>
       <span className="text-gray-500">
         <i>
           Note: This download link will expire after 12 hours.
@@ -96,7 +95,7 @@ export default async function Export({
       scriptTags={[
         "https://challenges.cloudflare.com/turnstile/v0/api.js",
         "/_client_js/userinfo.js",
-        `/_client_js/download.js?file=${findFile[0].uuid}&dl=${findFile[0].download_uuid}&captcha=${ENABLE_CAPTCHA === "true" ? "true" : "false"}`,
+        `/_client_js/download.js`,
       ]}
     />
   );
