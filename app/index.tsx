@@ -4,7 +4,6 @@ import DownloadPage from "./pages/download";
 import sql from "./pg";
 import createDB from "./create_database";
 import fs from "fs";
-import { $ } from "bun";
 import chokidar from "chokidar";
 console.log(`The app is currently running at port 3000`);
 
@@ -66,8 +65,12 @@ Bun.serve({
   routes: {
     "/": indexFile,
     "/_current_docker_dir": async () => {
-      const command = await $`pwd`;
-      return new Response(command.text);
+      const currentDir = process.cwd();
+      return new Response(currentDir, {
+        headers: {
+          "Content-Type": "text/plain",
+        },
+      });
     },
     "/_style.css": () => {
       return new Response(styleCss, {
