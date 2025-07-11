@@ -4,6 +4,8 @@ import DownloadPage from "./pages/download";
 import sql from "./pg";
 import createDB from "./create_database";
 import fs from "fs";
+import { $ } from "bun";
+import chokidar from "chokidar";
 console.log(`The app is currently running at port 3000`);
 
 const styleCss = await fs.promises.readFile("./app/style.css");
@@ -46,11 +48,27 @@ async function checkDatabaseInit() {
 
 await checkDatabaseInit();
 
+// WATCH FILES
+const watcher = chokidar.watch("./data", {
+  ignored: (path, stats) => stats?.isFile() && path.endsWith(".tmp"),
+  persistent: true,
+});
+const log = console.log.bind(console);
+watcher
+  .on("add", (path) => log(`File ${path} has been added`))
+  .on("change", (path) => log(`File ${path} has been changed`))
+  .on("unlink", (path) => log(`File ${path} has been removed`));
+
+// APP
 Bun.serve({
   port: 3000,
   development: false,
   routes: {
     "/": indexFile,
+    "/_current_docker_dir": async () => {
+      const command = await $`pwd`;
+      return new Response(command);
+    },
     "/_style.css": () => {
       return new Response(styleCss, {
         headers: {
