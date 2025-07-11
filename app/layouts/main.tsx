@@ -26,11 +26,10 @@ export default function Layout({
         dangerouslySetInnerHTML={{
           __html: `
           /**
-            * COPYRIGHT ${new Date().getFullYear()}
-            * WRITEN BY @hpware on GitHub, CONTENT IS NOT OWNED TO THE PERSON WHO WROTE THE SOFTWARE.
-            * THIS WEBSITE IS OWNED BY ${COPYRIGHT_OWNER}, AND ALL LIBILLTY GOES TO THE COPYTIGHT OWNER. IF IT USES THE PLACEHOLDER "Respected Owners", DO NOT CONTACT THE PERSON WHO WROTE THIS, HE HAS NO IDEA EITHER
-            * THIS PLATFORM / SOFTWARE IS LICENSED UNDER MIT
+            * COPYRIGHT ${new Date().getFullYear()} ${COPYRIGHT_OWNER}
+            * THIS PLATFORM / SOFTWARE IS LICENSED UNDER THE MIT LICENSE.
             * Writen using Bun & Postgres.
+            * If you want to self host it, you can learn more about it here: https://yhw.tw/ljads_selfhost
           */
           `,
         }}

@@ -24,13 +24,7 @@ for (const file of await fs.promises.readdir("./app/client_js")) {
 
 Bun.serve({
   port: 3000,
-  development: process.env.NODE_ENV !== "production" && {
-    // Enable browser hot reloading in development
-    hmr: true,
-
-    // Echo console logs from the browser to the server
-    console: true,
-  },
+  development: false,
   routes: {
     "/": indexFile,
     "/_style.css": () => {
