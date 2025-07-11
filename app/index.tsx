@@ -13,7 +13,7 @@ const clientJsFilesUrlArray: any[] = [];
 for (const file of await fs.promises.readdir("./app/client_js")) {
   if (file.endsWith(".js")) {
     const filePath = `./app/client_js/${file}`;
-    clientJsFilesUrlArray[`/_client_js/${file}`] = async () => {
+    clientJsFilesUrlArray[`/__client_js/${file}`] = async () => {
       const content = await fs.promises.readFile(filePath, "utf-8");
       return new Response(content, {
         headers: {
@@ -64,15 +64,7 @@ Bun.serve({
   development: false,
   routes: {
     "/": indexFile,
-    "/_current_docker_dir": async () => {
-      const currentDir = process.cwd();
-      return new Response(currentDir, {
-        headers: {
-          "Content-Type": "text/plain",
-        },
-      });
-    },
-    "/_style.css": () => {
+    "/__style.css": () => {
       return new Response(styleCss, {
         headers: {
           "Content-Type": "text/css",
@@ -80,7 +72,7 @@ Bun.serve({
       });
     },
     ...clientJsFilesUrlArray,
-    "/download/:uuid/:dlid": async (req: Request) => {
+    "/__download/:uuid/:dlid": async (req: Request) => {
       const url = new URL(req.url);
       const { uuid: uuidSlug, dlid } = req.params;
 

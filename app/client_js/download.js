@@ -23,7 +23,7 @@ async function submitDownloadRequest() {
       fileMessage.innerText = "Request failed";
       return;
     }
-    const buildUrl = `/download/${downloadUuid}/${downloadAuthUrl}?usr=${currentUserString}&fact=${fileUuid}`;
+    const buildUrl = `/__download/${downloadUuid}/${downloadAuthUrl}?usr=${currentUserString}&fact=${fileUuid}`;
   } catch (e) {
     fileMessage.innerText = e.message;
     return;
@@ -33,7 +33,7 @@ async function submitDownloadRequest() {
 async function getDownloadAuthUrl(turnstileResponse) {
   try {
     const req = await fetch(
-      `/_dlurl/${currentUserString}/${fileUuid}?captcha=${captchaEnabled}`,
+      `/__dlurl/${currentUserString}/${fileUuid}?captcha=${captchaEnabled}`,
       {
         method: "POST",
         headers: {

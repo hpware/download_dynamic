@@ -19,7 +19,7 @@ export default function Layout({
     <html>
       <head>
         <title>{title || "Undefined"}</title>
-        <link rel="stylesheet" href="/_style.css" />
+        <link rel="stylesheet" href="/__style.css" />
         <meta charSet="UTF-8" />
       </head>
       <script

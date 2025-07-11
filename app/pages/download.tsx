@@ -9,6 +9,7 @@ const CF_SITEKEY =
   ENABLE_CAPTCHA === "true" ? process.env.CF_TURNSTILE_SITE_KEY : "";
 
 const clientDownloadLimit = process.env.CLIENT_DOWNLOAD_LIMIT || null;
+const LOCALE = process.env.LOCALE || "zh-tw";
 
 function startDownload() {
   console.log(CF_SITEKEY);
@@ -31,6 +32,10 @@ function Page({ fileSQL }: { fileSQL: any }) {
         <CloudDownloadIcon className="p-1 w-7 h-7" />
         &nbsp;&nbsp;Download&nbsp;<i>{fileSQL.file_name}</i>
       </h3>
+      <h4>
+        File uploaded at{" "}
+        {new Date(fileSQL.created_at).toLocaleDateString(LOCALE)}
+      </h4>
       {ENABLE_CAPTCHA === "true" && (
         <div
           className="cf-turnstile"
@@ -83,7 +88,10 @@ export default async function Export({
       <Layout
         page={<FileNotFound />}
         title="Cannot find this file!"
-        scriptTags={["/_client_js/userinfo.js", `/_client_js/fileNotFound.js`]}
+        scriptTags={[
+          "/__client_js/userinfo.js",
+          `/__client_js/fileNotFound.js`,
+        ]}
       />
     );
   }
@@ -93,8 +101,8 @@ export default async function Export({
       title={`Download ${findFile[0].file_name} 📥`}
       scriptTags={[
         "https://challenges.cloudflare.com/turnstile/v0/api.js",
-        "/_client_js/userinfo.js",
-        `/_client_js/download.js`,
+        "/__client_js/userinfo.js",
+        `/__client_js/download.js`,
       ]}
     />
   );
