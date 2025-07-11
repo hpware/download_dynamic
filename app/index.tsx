@@ -1,7 +1,6 @@
 import { renderToReadableStream } from "react-dom/server";
 import indexFile from "./html/index.html";
 import DownloadPage from "./pages/download";
-import cf_turnstile_servercheck from "./cf/turnstile/serverCheck";
 import sql from "./pg";
 import createDB from "./create_database";
 import fs from "fs";
@@ -56,14 +55,6 @@ Bun.serve({
       return new Response(styleCss, {
         headers: {
           "Content-Type": "text/css",
-        },
-      });
-    },
-    "/_cf_turnstile/srchk": async () => {
-      const result = await cf_turnstile_servercheck();
-      return new Response(result, {
-        headers: {
-          "Content-Type": "application/json",
         },
       });
     },

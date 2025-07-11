@@ -8,7 +8,7 @@ const ENABLE_CAPTCHA = process.env.ENABLE_CAPTCHA;
 const CF_SITEKEY =
   ENABLE_CAPTCHA === "true" ? process.env.CF_TURNSTILE_SITE_KEY : "";
 
-const clientDownloadLimit = process.env.CLIENT_DOWNLOAD_LIMIT_HR || "none";
+const clientDownloadLimit = process.env.CLIENT_DOWNLOAD_LIMIT || null;
 
 function startDownload() {
   console.log(CF_SITEKEY);
@@ -20,7 +20,7 @@ function Page({ fileSQL }: { fileSQL: any }) {
   const fileUuid = "${fileSQL.uuid}";
   const downloadUuid = "${fileSQL.download_uuid}";
   const captchaEnabled = ${ENABLE_CAPTCHA === "true" ? true : false};
-  const clientDownloadLimit = "${clientDownloadLimit}";
+  const clientDownloadLimit = ${clientDownloadLimit};
   const CF_SITEKEY = "${CF_SITEKEY}";
   `
     .replaceAll("\n", "")
@@ -35,7 +35,6 @@ function Page({ fileSQL }: { fileSQL: any }) {
         <div
           className="cf-turnstile"
           data-sitekey={CF_SITEKEY}
-          data-callback={`/_cf_turnstile/srchk?genId=${genId}`}
           id="cf_turnstile"
         ></div>
       )}

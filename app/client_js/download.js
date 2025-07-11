@@ -18,7 +18,7 @@ async function submitDownloadRequest() {
       turnstileResponse = turnstile.getResponse(widgetId);
       console.log(turnstileResponse);
     }
-    const downloadAuthUrl = await getDownloadAuthUrl();
+    const downloadAuthUrl = await getDownloadAuthUrl(turnstileResponse);
     if (!downloadAuthUrl.success) {
       fileMessage.innerText = "Request failed";
       return;
@@ -30,10 +30,21 @@ async function submitDownloadRequest() {
   }
 }
 
-async function getDownloadAuthUrl() {
+async function getDownloadAuthUrl(turnstileResponse) {
   try {
     const req = await fetch(
-      `/_dlurl/${currentUserString}/${fileUuid}?captcha=${captchaEnabled}&turnstile=${turnstileResponse}`,
+      `/_dlurl/${currentUserString}/${fileUuid}?captcha=${captchaEnabled}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          siteKey: CF_SITEKEY || null,
+          turnstileRes: turnstileResponse || null,
+          clientDownloadLimit: clientDownloadLimit || null,
+        }),
+      },
     );
     const res = await req.json();
     return {
