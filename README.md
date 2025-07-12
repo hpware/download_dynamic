@@ -52,7 +52,7 @@ echo ENABLE_CAPTCHA=true >> ./.env
 ## BYO INDEX
 You can bring you own index file :)
 ```yaml
-+  - "./index.html:/app/app/html/index.html"
+- "./index.html:/app/html/index.html"
 ```
 an pull
 ```bash

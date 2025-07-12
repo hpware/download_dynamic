@@ -1,15 +1,14 @@
 import { renderToReadableStream } from "react-dom/server";
-import indexFile from "./html/index.html";
+import indexFile from "../html/index.html";
 import DownloadPage from "./pages/download";
 import sql from "./pg";
 import createDB from "./create_database";
 import fs from "fs";
 import chokidar from "chokidar";
-console.log(`The app is currently running at port 3000`);
-
+import { AddFile, RemoveFile, ChangeFile } from "./fileActions";
 const styleCss = await fs.promises.readFile("./app/style.css");
-
 const clientJsFilesUrlArray: any[] = [];
+const startTime = performance.now();
 for (const file of await fs.promises.readdir("./app/client_js")) {
   if (file.endsWith(".js")) {
     const filePath = `./app/client_js/${file}`;
@@ -52,11 +51,10 @@ const watcher = chokidar.watch("./data", {
   ignored: (path, stats) => stats?.isFile() && path.endsWith(".tmp"),
   persistent: true,
 });
-const log = console.log.bind(console);
 watcher
-  .on("add", (path) => log(`File ${path} has been added`))
-  .on("change", (path) => log(`File ${path} has been changed`))
-  .on("unlink", (path) => log(`File ${path} has been removed`));
+  .on("add", (path, ) => AddFile(path))
+  .on("change", (path) => ChangeFile(path))
+  .on("unlink", (path) => RemoveFile(path));
 
 // APP
 Bun.serve({
@@ -115,3 +113,7 @@ Bun.serve({
     },
   },
 });
+
+console.log(
+  `The app is currently running at port 3000, launched in ${Math.round(performance.now() - startTime)} milliseconds.`,
+);
