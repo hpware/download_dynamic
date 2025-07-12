@@ -6,6 +6,8 @@ import createDB from "./create_database";
 import fs from "fs";
 import chokidar from "chokidar";
 import { AddFile, RemoveFile, ChangeFile } from "./fileActions";
+import * as crypto from "crypto";
+
 const styleCss = await fs.promises.readFile("./app/style.css");
 const clientJsFilesUrlArray: any[] = [];
 const startTime = performance.now();
@@ -46,15 +48,26 @@ async function checkDatabaseInit() {
 
 await checkDatabaseInit();
 
+function calculateHash(filePath: string) {
+  return new Promise((resolve, reject) => {
+    const hash = crypto.createHash("sha256");
+    const stream = fs.createReadStream(filePath);
+
+    stream.on("error", reject);
+    stream.on("data", (chunk) => hash.update(chunk));
+    stream.on("end", () => resolve(hash.digest("hex")));
+  });
+}
+
 // WATCH FILES
 const watcher = chokidar.watch("./data", {
   ignored: (path, stats) => stats?.isFile() && path.endsWith(".tmp"),
   persistent: true,
 });
 watcher
-  .on("add", (path, ) => AddFile(path))
-  .on("change", (path) => ChangeFile(path))
-  .on("unlink", (path) => RemoveFile(path));
+  .on("add", async (path) => AddFile(path, await calculateHash(path)))
+  .on("change", async (path) => ChangeFile(path, await calculateHash(path)))
+  .on("unlink", async (path) => RemoveFile(path));
 
 // APP
 Bun.serve({
