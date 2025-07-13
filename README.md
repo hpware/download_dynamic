@@ -2,6 +2,12 @@
 
 Introducting LJADS, a awesome easy download system that includes time limits. (And a basic anubis setup to prevent bots, also, you can turn on captchas!)
 
+## Limitations:
+The max monitor count is `26437` on Debian Linux and `10415` on MacOS
+
+## Testing Server:
+For demoing, you can use https://ljads-demo.yuanhau.com for testing, before you load it on to your own server. (Although, if you have docker compose installed it only takes 3 minute to set it up with cloudflared and Anubis)
+
 ## The stack:
 
 - Bun

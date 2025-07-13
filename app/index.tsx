@@ -63,7 +63,13 @@ function calculateHash(filePath: string) {
 const watcher = chokidar.watch("./data", {
   ignored: (path, stats) => stats?.isFile() && path.endsWith(".tmp"),
   persistent: true,
+  usePolling: true,
+  interval: 1000,
+  awaitWriteFinish: true,
+  useFsEvents: false,
+  fseventsThreshold: 100000,
 });
+
 watcher
   .on("add", async (path) => AddFile(path, await calculateHash(path)))
   .on("change", async (path) => ChangeFile(path, await calculateHash(path)))
