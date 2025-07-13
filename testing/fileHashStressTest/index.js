@@ -5,6 +5,34 @@ import { $ } from "bun";
 await $`rm -rf ./data`;
 await $`mkdir ./data`;
 const startTime = performance.now();
+
+const args = {
+  fileCount:
+    process.argv
+      .find((arg) => arg.startsWith("--count=") || arg.startsWith("-c="))
+      ?.split("=")[1] || "100",
+};
+const totalFileCount = parseInt(args.fileCount);
+const readline = require("readline").createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+console.log(
+  "This will DELETE the entire ./data folder, make sure there aren't any files there. or you have a backup of it. after this benchmark, please `rm -r ./data` to folder.",
+);
+
+await new Promise((resolve) => {
+  readline.question("Proceed? (y/N): ", (answer) => {
+    readline.close();
+    if (answer.toLowerCase() !== "y") {
+      console.log("Operation cancelled");
+      process.exit(0);
+    }
+    resolve();
+  });
+});
+
 var fileCount = 0;
 const calculateHash = (filePath) => {
   return new Promise((resolve, reject) => {
@@ -61,4 +89,4 @@ async function createFiles(count, delayMs) {
     await new Promise((resolve) => setTimeout(resolve, delayMs));
   }
 }
-createFiles(100, 100);
+createFiles(totalFileCount, 100);
