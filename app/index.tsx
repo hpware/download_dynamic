@@ -111,7 +111,7 @@ Bun.serve({
         const searchParams = url.searchParams;
         const uuid = searchParams.get("uuid");
         const stream = await renderToReadableStream(
-          <DownloadPage pathname={pathname} uuidMode={uuid} />,
+          <DownloadPage pathname={pathname} />,
         );
         await stream.allReady;
 
