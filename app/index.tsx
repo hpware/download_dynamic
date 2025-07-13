@@ -88,6 +88,10 @@ Bun.serve({
         },
       });
     },
+    "/testing": () => {
+      console.log("testing loaded");
+      return new Response("hi");
+    },
     ...clientJsFilesUrlArray,
     "/__download/:uuid/:dlid": async (req: Request) => {
       const url = new URL(req.url);
