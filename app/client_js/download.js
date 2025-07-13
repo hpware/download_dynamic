@@ -18,44 +18,28 @@ async function submitDownloadRequest() {
       turnstileResponse = turnstile.getResponse(widgetId);
       console.log(turnstileResponse);
     }
-    const downloadAuthUrl = await getDownloadAuthUrl(turnstileResponse);
-    if (!downloadAuthUrl.success) {
-      fileMessage.innerText = "Request failed";
-      return;
-    }
-    const buildUrl = `/__download/${downloadUuid}/${downloadAuthUrl}?usr=${currentUserString}&fact=${fileUuid}`;
-  } catch (e) {
-    fileMessage.innerText = e.message;
-    return;
-  }
-}
-
-async function getDownloadAuthUrl(turnstileResponse) {
-  try {
-    const req = await fetch(
-      `/__dlurl/${currentUserString}/${fileUuid}?captcha=${captchaEnabled}`,
+    const req1 = await fetch(
+      `/__dlaction/${currentUserString}/${fileUuid}?captcha=${captchaEnabled}`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          siteKey: CF_SITEKEY || null,
           turnstileRes: turnstileResponse || null,
-          clientDownloadLimit: clientDownloadLimit || null,
         }),
       },
     );
-    const res = await req.json();
-    return {
-      key: res.key,
-      success: res.success,
-    };
+    const res1 = await req1.json();
+    if (!res1.success) {
+      fileMessage.innerText = res1.fail_message;
+      return;
+    }
+    const buildUrl = `/__download/${downloadUuid}/${downloadAuthUrl}?usr=${currentUserString}&fact=${fileUuid}`;
+    console.log(buildUrl);
+    return;
   } catch (e) {
     fileMessage.innerText = e.message;
-    return {
-      key: null,
-      success: false,
-    };
+    return;
   }
 }

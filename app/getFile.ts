@@ -19,7 +19,7 @@ export default async function GetFile(
     }
     const getDlStuffDetails = await sql`
       SELECT * FROM file
-      WHERE uuid = ${getDlStuff[0].matching_file}`;
+      WHERE download_uuid = ${getDlStuff[0].matching_file}`;
     if (getDlStuffDetails.length === 0) {
       throw new Error("Oops! This file does not exist anymore!");
     }

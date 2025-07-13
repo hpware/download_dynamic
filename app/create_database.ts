@@ -8,7 +8,6 @@ export default async function createDB() {
     download_uuid text not null,
     file_name text not null,
     file_hash text not null,
-    uploader text not null,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
   )
   `;

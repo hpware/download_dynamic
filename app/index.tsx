@@ -7,10 +7,24 @@ import fs from "fs";
 import chokidar from "chokidar";
 import { AddFile, RemoveFile, ChangeFile } from "./fileActions";
 import * as crypto from "crypto";
+import { getDownloadLink } from "./obtainDownloadLink";
 
 const styleCss = await fs.promises.readFile("./app/style.css");
 const clientJsFilesUrlArray: any[] = [];
 const startTime = performance.now();
+
+// CHECK FOR INCORRECT VALUES
+if (
+  process.env.ENABLE_CAPTCHA.length !== 0 &&
+  process.env.ENABLE_CAPTCHA?.toLocaleLowerCase() !== "true" &&
+  process.env.ENABLE_CAPTCHA?.toLocaleLowerCase() !== "false"
+) {
+  console.log(
+    "Please use true, false or none in the ENABLE_CAPTCHA .env value, the application WILL FAIL with this value",
+  );
+  process.exit(1);
+}
+
 for (const file of await fs.promises.readdir("./app/client_js")) {
   if (file.endsWith(".js")) {
     const filePath = `./app/client_js/${file}`;
@@ -88,11 +102,41 @@ Bun.serve({
         },
       });
     },
-    "/testing": () => {
+    /*"/testing": () => {
       console.log("testing loaded");
       return new Response("hi");
-    },
+      },*/
     ...clientJsFilesUrlArray,
+    "/__dlaction/:userid/:dlid": async (req: Request) => {
+      if (req.method !== "POST") {
+        return new Response("Method not allowed", { status: 400 });
+      }
+      try {
+        const captcha = process.env.ENABLE_CAPTCHA || "false";
+        const url = new URL(req.url);
+        const { dlid, userid } = req.params;
+        const body = await req.json();
+        const { turnstileRes } = body;
+        if (
+          !dlid.match(
+            /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
+          )
+        ) {
+          return new Response("Invalid UUID format", { status: 400 });
+        }
+        const result = await getDownloadLink(
+          turnstileRes,
+          dlid,
+          userid,
+          Boolean(captcha),
+        );
+        return new Response(JSON.stringify(result), {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      } catch (e) {}
+    },
     "/__download/:uuid/:dlid": async (req: Request) => {
       const url = new URL(req.url);
       const { uuid: uuidSlug, dlid } = req.params;
