@@ -44,8 +44,14 @@ echo POSTGRES_DB=main >> ./.env
 For Windows Users (AI Generated)
 
 ```powershell
-Add-Content -Path ".env" -Value "POSTGRES_USER=u$([System.Convert]::ToHexString([System.Security.Cryptography.RandomNumberGenerator]::GetBytes(5)))"
-Add-Content -Path ".env" -Value "POSTGRES_PASSWORD=$([Convert]::ToBase64String([System.Security.Cryptography.RandomNumberGenerator]::GetBytes(36)))"
+$bytes = New-Object byte[] 5
+(New-Object System.Security.Cryptography.RNGCryptoServiceProvider).GetBytes($bytes)
+$hexString = ($bytes | ForEach-Object { '{0:X2}' -f $_ }) -join ''
+Add-Content -Path ".env" -Value "POSTGRES_USER=u$hexString"
+$bytes = New-Object byte[] 36
+(New-Object System.Security.Cryptography.RNGCryptoServiceProvider).GetBytes($bytes)
+$base64String = [Convert]::ToBase64String($bytes)
+Add-Content -Path ".env" -Value "POSTGRES_PASSWORD=$base64String"
 Add-Content -Path ".env" -Value "POSTGRES_DB=main"
 ```
 
