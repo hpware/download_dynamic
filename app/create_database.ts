@@ -15,8 +15,8 @@ export default async function createDB() {
   await sql`
   CREATE TABLE IF NOT EXISTS strictdownloadlinkallow (
     uuid text PRIMARY KEY,
-    key1 text unique not null,
-    key2 text unique not null,
+    dlid text unique not null,
+    client_id text unique not null,
     matching_file text not null,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
   )

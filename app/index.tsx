@@ -8,6 +8,7 @@ import chokidar from "chokidar";
 import { AddFile, RemoveFile, ChangeFile } from "./fileActions";
 import * as crypto from "crypto";
 import { getDownloadLink } from "./obtainDownloadLink";
+import GetFile from "./getFile";
 
 const styleCss = await fs.promises.readFile("./app/style.css");
 const clientJsFilesUrlArray: any[] = [];
@@ -140,6 +141,7 @@ Bun.serve({
     "/__download/:uuid/:dlid": async (req: Request) => {
       const url = new URL(req.url);
       const { uuid: uuidSlug, dlid } = req.params;
+      const clientId = url.searchParams.get("usr");
 
       if (
         !uuidSlug.match(
@@ -148,12 +150,15 @@ Bun.serve({
       ) {
         return new Response("Invalid UUID format", { status: 400 });
       }
+      if (!clientId) {
+        return new Response("No client ID entered.", { status: 400 });
+      }
 
-      const fileName = "fileName";
-      const fileType = "text/html";
-      return new Response("Hello", {
+      const fileName = await GetFile(uuidSlug, dlid, clientId);
+      const file = await fs.promises.readFile(`/data/${fileName}`);
+      return new Response(file, {
         headers: {
-          "Content-Type": `${fileType}`,
+          "Content-Type": "application/octet-stream",
           "Content-Disposition": `attachment; filename="${fileName}"`,
         },
       });
