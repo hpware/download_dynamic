@@ -71,14 +71,7 @@ function Page({ fileSQL }: { fileSQL: any }) {
   );
 }
 
-export default async function Export({
-  pathname,
-  uuid,
-}: {
-  pathname: string;
-  uuid: any;
-}) {
-  console.log(uuid);
+export default async function Export({ pathname }: { pathname: string }) {
   const findFile = await sql`
     SELECT * FROM file
     WHERE path = ${pathname}

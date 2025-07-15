@@ -7,11 +7,8 @@ export default async function createDB() {
     path text unique not null,
     download_uuid text not null,
     file_name text not null,
-    file_type text not null,
-    file_size text not null,
-    uploader text not null,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    download_path text not null
+    file_hash text not null,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
   )
   `;
 
@@ -26,4 +23,5 @@ export default async function createDB() {
   `;
 }
 
+// In case of cli actions
 createDB();
