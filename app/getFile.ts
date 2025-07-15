@@ -14,15 +14,26 @@ export default async function GetFile(
       ${process.env.LIMIT_TO_PER_CLIENT === "true" && `AND client_id = ${clientId}`}
       `;
     if (getDlStuff.length === 0) {
-      throw new Error("Not allowed to download this file");
+      return {
+        error: true,
+        error_text: "Not allowed to download this file",
+        data: null,
+      };
     }
     const getDlStuffDetails = await sql`
       SELECT * FROM file
       WHERE download_uuid = ${getDlStuff[0].matching_file}`;
     if (getDlStuffDetails.length === 0) {
-      throw new Error("Oops! This file does not exist anymore!");
+      return {
+        error: true,
+        error_text: "Oops! This file does not exist anymore!",
+        data: null,
+      };
     }
-    return getDlStuffDetails[0].file_name;
+    return {
+      error: false,
+      data: getDlStuffDetails[0].file_name,
+    };
   } catch (e) {
     console.log(e);
   }

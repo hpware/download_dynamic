@@ -154,12 +154,16 @@ Bun.serve({
         return new Response("No client ID entered.", { status: 400 });
       }
 
-      const fileName = await GetFile(uuidSlug, dlid, clientId);
-      const file = await fs.promises.readFile(`/data/${fileName}`);
+      const fileReturn = await GetFile(uuidSlug, dlid, clientId);
+      if (fileReturn.error === true) {
+        return new Response(fileReturn.errortext);
+      }
+
+      const file = await fs.promises.readFile(`/data/${fileReturn.data}`);
       return new Response(file, {
         headers: {
           "Content-Type": "application/octet-stream",
-          "Content-Disposition": `attachment; filename="${fileName}"`,
+          "Content-Disposition": `attachment; filename="${fileReturn.data}"`,
         },
       });
     },
