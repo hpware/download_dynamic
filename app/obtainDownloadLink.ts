@@ -36,6 +36,7 @@ export async function getDownloadLink(
       return {
         success: false,
         fail_message: "Captcha request failed or captcha request expired",
+        downloadAuthUrl: null,
       };
     }
     const randomString = generateRandomString(14);
@@ -43,6 +44,7 @@ export async function getDownloadLink(
     return {
       success: true,
       fail_message: null,
+      downloadAuthUrl: randomString,
     };
   } catch (e) {}
 }

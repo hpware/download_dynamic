@@ -8,16 +8,20 @@ export async function AddFile(path: string, hash: string) {
     const fileNameWithoutExt = pathp.parse(path).name;
     const runSQLQuery = await sql`
       INSERT INTO file (uuid, path, download_uuid, file_name, file_hash)
-      VALUES (${uuidv4()}, ${fileNameWithoutExt}, ${uuidv4()}, ${path}, ${hash})
-      ON CONFLICT (path) DO UPDATE
-      SET
-        path = file.path || '_' || (
-          SELECT COALESCE(
-            (SELECT MAX(CAST(REGEXP_REPLACE(f2.path, '^.*_([0-9]+)$', '\1') AS INTEGER)) + 1
-            FROM file f2
-            WHERE f2.path ~ ('^' || ${fileNameWithoutExt} || '_[0-9]+$')
-          ), 1)
-        )
+      VALUES (
+        ${uuidv4()},
+        ${path},
+        ${uuidv4()},
+        ${fileNameWithoutExt},
+        ${hash}
+      )
+      ON CONFLICT (path)
+      DO UPDATE SET
+        file_hash = CASE
+          WHEN file.file_hash = ${hash} THEN file.file_hash
+          ELSE ${hash}
+        END
+      RETURNING *
     `;
     console.log(runSQLQuery);
   } catch (e) {

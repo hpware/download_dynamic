@@ -35,8 +35,8 @@ async function submitDownloadRequest() {
       fileMessage.innerText = res1.fail_message;
       return;
     }
-    const buildUrl = `/__download/${downloadUuid}/${downloadAuthUrl}?usr=${currentUserString}&fact=${fileUuid}`;
-    console.log(buildUrl);
+    const buildUrl = `/__download/${downloadUuid}/${res1.downloadAuthUrl}?usr=${currentUserString}&fact=${fileUuid}`;
+    window.location.href = buildUrl;
     return;
   } catch (e) {
     fileMessage.innerText = e.message;
