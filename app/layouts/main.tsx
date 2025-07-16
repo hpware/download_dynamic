@@ -20,6 +20,7 @@ export default function Layout({
       <head>
         <title>{title || "Undefined"}</title>
         <link rel="stylesheet" href="/__style.css" />
+        <link rel="favicon" href="/favicon.svg" />
         <meta charSet="UTF-8" />
       </head>
       <script

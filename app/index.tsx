@@ -116,6 +116,14 @@ Bun.serve({
         },
       },
     ),
+    "/favicon.svg": new Response(
+      await Bun.file("./icons/favicon.svg").bytes(),
+      {
+        headers: {
+          "Content-Type": "image/svg+xml",
+        },
+      },
+    ),
     "/__dlaction/:userid/:dlid": async (req: Request) => {
       if (req.method !== "POST") {
         return new Response("Method not allowed", { status: 400 });
