@@ -156,7 +156,7 @@ Bun.serve({
 
       const fileReturn = await GetFile(uuidSlug, dlid, clientId);
       if (fileReturn.error === true) {
-        return new Response(fileReturn.errortext);
+        return new Response(fileReturn.error_text);
       }
 
       const file = await fs.promises.readFile(`/data/${fileReturn.data}`);

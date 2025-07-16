@@ -11,12 +11,12 @@ export default async function GetFile(
       WHERE matching_file = ${slug1}
       AND dlid = ${slug2}
       AND created_at < NOW() - INTERVAL '6 hours'
-      ${process.env.LIMIT_TO_PER_CLIENT === "true" && `AND client_id = ${clientId}`}
+      ${process.env.LIMIT_TO_PER_CLIENT === "true" ? sql`AND client_id = ${clientId}` : sql``}
       `;
     if (getDlStuff.length === 0) {
       return {
         error: true,
-        error_text: "Not allowed to download this file",
+        error_text: "You are not allowed to download this file.",
         data: null,
       };
     }
