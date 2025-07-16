@@ -155,15 +155,15 @@ Bun.serve({
       }
 
       const fileReturn = await GetFile(uuidSlug, dlid, clientId);
-      if (fileReturn.error === true) {
-        return new Response(fileReturn.error_text);
+      if (fileReturn?.error === true) {
+        return new Response(fileReturn?.error_text);
       }
 
-      const file = await fs.promises.readFile(`/data/${fileReturn.data}`);
+      const file = await fs.promises.readFile(`/data/${fileReturn?.data}`);
       return new Response(file, {
         headers: {
           "Content-Type": "application/octet-stream",
-          "Content-Disposition": `attachment; filename="${fileReturn.data}"`,
+          "Content-Disposition": `attachment; filename="${fileReturn?.data}"`,
         },
       });
     },
