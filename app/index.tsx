@@ -108,6 +108,14 @@ Bun.serve({
       return new Response("hi");
       },*/
     ...clientJsFilesUrlArray,
+    "/favicon.ico": new Response(
+      await Bun.file("./icons/favicon.ico").bytes(),
+      {
+        headers: {
+          "Content-Type": "image/x-icon",
+        },
+      },
+    ),
     "/__dlaction/:userid/:dlid": async (req: Request) => {
       if (req.method !== "POST") {
         return new Response("Method not allowed", { status: 400 });

@@ -1,4 +1,10 @@
+<div align="center">
+<img src="./.github/README/heading.jpg" width="100%">
+</div>
+
 # LJADS
+## Design files:
+Figma: https://www.figma.com/design/N18ucQnEI1kCp5AeV1mKwD/Untitled?node-id=0-1&t=atxFRlNvtFrmOR8p-1
 
 Introducting LJADS, a awesome easy download system that includes time limits. (And a basic anubis setup to prevent bots, also, you can turn on captchas!)
 
