@@ -9,6 +9,7 @@
     "styles:generate": "bunx @tailwindcss/cli -i ./app/css/main.css -o ./app/style.css",
     "scripts:getcurrentyear": "bun run scripts/getCurrentYear.ts",
     "scripts:optimize": "bash ./scripts/optimize.sh",
+    "scripts:airepomix": "bun x repomix",
     "testing:filehashstresstest": "bun run ./testing/fileHashStressTest/index.js"
   },
   "devDependencies": {
