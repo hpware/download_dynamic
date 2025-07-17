@@ -36,7 +36,7 @@ export async function getDownloadLink(
       return {
         success: false,
         fail_message: "Captcha request failed or captcha request expired",
-        downloadAuthUrl: null,
+        downloadAuthUrl: null as any,
       };
     }
     const randomString = generateRandomString(14);
@@ -46,8 +46,15 @@ export async function getDownloadLink(
        `;
     return {
       success: true,
-      fail_message: null,
+      fail_message: null as any,
       downloadAuthUrl: randomString,
+      storeToDB: storeToDB,
     };
-  } catch (e) {}
+  } catch (e) {
+    return {
+      success: false,
+      fail_message: `Server side error. If you are the owner, please submit a GitHub Issue to the repo. Error message: ${e?.message}`,
+      downloadAuthUrl: null as any,
+    };
+  }
 }
