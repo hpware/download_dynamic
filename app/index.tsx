@@ -175,7 +175,7 @@ Bun.serve({
         return new Response(fileReturn?.error_text);
       }
 
-      const file = await fs.promises.readFile(`./data/${fileReturn?.data}`);
+      const file = await fs.promises.readFile(`./${fileReturn?.data}`);
       return new Response(file, {
         headers: {
           "Content-Type": "application/octet-stream",
