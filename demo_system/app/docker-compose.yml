@@ -5,9 +5,15 @@ services:
     environment:
       POSTGRES_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-downloads}
       ENABLE_CAPTCHA: ${ENABLE_CAPTCHA:-false}
+      CF_TURNSTILE_SITE_KEY: ${CF_TURNSTILE_SITE_KEY:-""}
+      CF_TURNSTILE_SECRET_KEY: ${CF_TURNSTILE_SECRET_KEY-""}
+      COPYRIGHT_OWNER: ${COPYRIGHT_OWNER-"Respected Owners"}
+      CLIENT_DOWNLOAD_LIMIT: ${CLIENT_DOWNLOAD_LIMIT-""}
+      LIMIT_TO_PER_CLIENT: ${LIMIT_TO_PER_CLIENT-false}
+
     volumes:
-      - "./data:/app/data"
-      - "./index.html:/app/html/index.html"
+      - ./data:/app/data
+      - ./index.html:/app/html/index.html
     labels:
       - com.centurylinklabs.watchtower.enable=true
     depends_on:
@@ -23,28 +29,28 @@ services:
       - /filestor/pg/ljads_demo_1:/var/lib/postgresql/data
     healthcheck:
       test:
-        [
-          "CMD-SHELL",
-          "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-downloads}",
-        ]
+        - CMD-SHELL
+        - pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-downloads}
       interval: 10s
       timeout: 5s
       retries: 5
   anubis:
     image: ghcr.io/techarohq/anubis:latest
     environment:
-      BIND: ":8080"
+      BIND: :8080
       DIFFICULTY: "4"
-      METRICS_BIND: ":9090"
+      METRICS_BIND: :9090
       SERVE_ROBOTS_TXT: "true"
-      TARGET: "http://app:3000"
-      POLICY_FNAME: "/data/cfg/botPolicy.yaml"
+      TARGET: http://app:3000
+      POLICY_FNAME: /data/cfg/botPolicy.yaml
       OG_PASSTHROUGH: "true"
-      OG_EXPIRY_TIME: "24h"
-    ports: # HERE
+      OG_EXPIRY_TIME: 24h
+    ports:
+      # HERE
       - 127.0.0.1:23006:8080
     volumes:
-      - "./botPolicy.yaml:/data/cfg/botPolicy.yaml"
+      - ./botPolicy.yaml:/data/cfg/botPolicy.yaml
     depends_on:
       app:
-        condition: "service_started"
+        condition: service_started
+networks: {}

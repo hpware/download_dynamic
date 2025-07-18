@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+    <head>
+        <title>A demo system for LJADS.</title>
+        <!--TESTING ONLY -->
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <link rel="stylesheet" href="tailwindcss" />
+        <meta charset="UTF-8" />
+    </head>
+    <body class="min-h-screen">
+        <div
+            class="justify-center absolute inset-0 text-center flex flex-col m-2 p-2"
+        >
+            <section id="wat" class="flex flex-col">
+                <h1 class="text-2xl">What is this?</h1>
+                <span
+                    >This is a downloading system made like the Massgrave
+                    downloading system (which is inspired by the Microsoft
+                    Windows download system, but thats beside the point), and
+                    this project mimics that, but using Bun, React, Tailwind &
+                    Postgres!</span
+                >
+            </section>
+            <section id="tryit">
+                <h1 class="text-xl">Want to try it out?</h1>
+                <span>Sure! Here are the linkies!</span>
+                <div class="flex flex-row gap-2" id="links"></div>
+            </section>
+        </div>
+    </body>
+    <!--AUTO MAKE LINKS-->
+    <script>
+        const linksArray = [
+            {
+                text: "A working file",
+                goto: "/license_1",
+                bg_color: "green-400",
+                text_color: "black",
+            },
+            {
+                text: "A broken file",
+                goto: "/no_this_is_not_a_file",
+                bg_color: "red-500",
+                text_color: "white",
+            },
+        ];
+        const linkiesDiv = document.getElementById("links");
+        linksArray.map((i) => {
+            linkiesDiv.innerHTML += `<a href="${i.goto}"><button class="bg-${i.bg_color} hover:bg-${i.bg_color}/50 text-${i.text_color} p-2 rounded-lg transition-all duration-300 hover:cursor-pointer">${i.text}</button></a>`;
+        });
+    </script>
+</html>

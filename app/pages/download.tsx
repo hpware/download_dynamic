@@ -61,6 +61,7 @@ function Page({ fileSQL }: { fileSQL: any }) {
             ` And each client can only create ${clientDownloadLimit} links per day`}
         </i>
       </span>
+      <span id="urlDisplay"></span>
       {/** SEND GENID TO THE CLIENT */}
       <script
         dangerouslySetInnerHTML={{

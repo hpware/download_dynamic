@@ -7,6 +7,7 @@ const currentJSURL = new URL(currentJS);
 const currentJSURLParams = new URLSearchParams(currentJSURL.search);
 const fileMessage = document.getElementById("errordiv");
 const currentUserString = localStorage.getItem("userString");
+const urlDisplay = document.getElementById("urlDisplay");
 
 async function submitDownloadRequest() {
   console.log("Requesting...");
@@ -36,8 +37,7 @@ async function submitDownloadRequest() {
       return;
     }
     const buildUrl = `/__download/${downloadUuid}/${res1.downloadAuthUrl}?usr=${currentUserString}`;
-    window.location.href = buildUrl;
-    //window.location.href = "#filedownloaded";
+    urlDisplay.innerHTML = `Download your file <a href="${buildUrl}" class="text-blue-500 hover:text-blue-300 duration-300 transition-all">Here</a>.`;
     return;
   } catch (e) {
     fileMessage.innerText = e.message;
