@@ -1,0 +1,118 @@
+# NOTE: THIS FILE DOES NOT WORK.
+apiVersion: zeabur.com/v1
+kind: Template
+metadata:
+  name: Download Dynamic
+spec:
+  description: A downloading software that includes captcha support & limited system.
+  icon: https://raw.githubusercontent.com/hpware/download_dynamic/refs/heads/master/icons/favicon.svg
+  coverImage: https://raw.githubusercontent.com/hpware/download_dynamic/refs/heads/master/.github/README/heading.jpg
+  variables:
+    - key: PUBLIC_DOMAIN
+      type: DOMAIN
+      name: Domain
+      description: What is the domain you want for this app?
+  tags:
+    - downloading system
+  readme: |-
+    # LJADS
+    ## Design files:
+    Figma: https://www.figma.com/design/N18ucQnEI1kCp5AeV1mKwD/Untitled?node-id=0-1&t=atxFRlNvtFrmOR8p-1
+
+    Introducting LJADS, a awesome easy download system that includes time limits. (And a basic anubis setup to prevent bots, also, you can turn on captchas!)
+
+    ## Limitations:
+      The max monitor count is `26437` on Debian Linux and `10415` on MacOS
+
+    ## Testing Server:
+    For demoing, you can use https://ljads-demo.yuanhau.com for testing, before you load it on to your own server. (Although, if you have docker compose installed it only takes 3 minute to set it up with cloudflared and Anubis)
+
+    ## The stack:
+
+    - Bun
+    - Postgres
+    - React
+    - TailwindCSS
+  services:
+    - name: Postgres
+      icon: https://raw.githubusercontent.com/zeabur/service-icons/main/marketplace/postgres.svg
+      template: PREBUILT
+      spec:
+        source:
+          image: postgres:16-alpine
+        ports:
+          - id: db
+            port: 5432
+            type: TCP
+        volumes:
+          - id: pg_data
+            dir: /var/lib/postgresql/data
+        env:
+          POSTGRES_USER:
+            default: postgres
+            expose: true
+          POSTGRES_PASSWORD:
+            default: changeme
+            expose: true
+          POSTGRES_DB:
+            default: downloads
+            expose: true
+        healthcheck:
+          test:
+            ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+          interval: 10s
+          timeout: 5s
+          retries: 5
+    - name: DownloadDynamicApp
+      icon: https://raw.githubusercontent.com/hpware/download_dynamic/refs/heads/master/icons/favicon.svg
+      template: PREBUILT
+      spec:
+        source:
+          image: ghcr.io/hpware/download_dynamic:latest
+        ports:
+          - id: web
+            port: 3000
+            type: HTTP
+        env:
+          POSTGRES_URL:
+            default: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+          ENABLE_CAPTCHA:
+            default: false
+          CF_TURNSTILE_SITE_KEY:
+            default: ""
+          CF_TURNSTILE_SECRET_KEY:
+            default: ""
+          COPYRIGHT_OWNER:
+            default: "Respected Owners"
+          CLIENT_DOWNLOAD_LIMIT:
+            default: ""
+          LIMIT_TO_PER_CLIENT:
+            default: false
+        volumes:
+          - id: data
+            dir: /app/data
+        depends_on:
+          - Postgres
+localization:
+  zh-TW:
+    variables:
+      - key: PUBLIC_DOMAIN
+        type: DOMAIN
+        name: 網域
+        description: 你想將這個系統綁在哪個網域上？
+  readme: |-
+    # LJADS
+    ## Design files:
+    Figma: https://www.figma.com/design/N18ucQnEI1kCp5AeV1mKwD/Untitled?node-id=0-1&t=atxFRlNvtFrmOR8p-1
+
+    Introducting LJADS, a awesome easy download system that includes time limits. (And a basic anubis setup to prevent bots, also, you can turn on captchas!)
+
+    ## Testing Server:
+    For demoing, you can use https://ljads-demo.yuanhau.com for testing, before you load it on to your own server. (Although, if you have docker compose installed it only takes 3 minute to set it up with cloudflared and Anubis)
+
+    ## The stack:
+
+    - Bun
+    - Postgres
+    - React
+    - TailwindCSS

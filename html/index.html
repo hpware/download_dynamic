@@ -5,36 +5,62 @@
         <link rel="stylesheet" href="tailwindcss" />
         <meta charset="UTF-8" />
         <link rel="favicon" href="/favicon.svg" />
+        <!--TESTING ONLY -->
+        <meta charset="UTF-8" />
     </head>
-    <body class="flex flex-col p-2 bg-[#f5fbff]">
-        <h1 class="text-2xl text-bold m-4 text-center">
-            Welcome to the LJADS home page!
-        </h1>
-        <hr class="justify-center m-auto w-[80vw]" />
-        <div class="m-4">
-            <h2 class="text-xl text-bold m-2">What is this?</h2>
-            <p>
-                This is the LJADS which stands for the Literary Just A Download
-                System, which is open sourced on GitHub
-                <a
-                    href="https://github.com/hpware/download_dynamic.git"
-                    target="_blank"
-                    class="duration-100 transform-all text-blue-500 hover:text-blue-300"
-                    >Here</a
-                >
-            </p>
-        </div>
-        <hr class="justify-center m-auto w-[80vw]" />
-        <p>
-            You can easily set this up by just running a few commands, view the
-            guide here:
-            <a
-                href="https://v5.yuanhau.com/pages/LJADS_guide"
-                target="_blank"
-                class="duration-100 transform-all text-blue-500 hover:text-blue-300"
-                >https://v5.yuanhau.com/pages/LJADS_guide</a
+    <body class="min-h-screen bg-[#f5fbff]">
+        <div
+            class="absolute inset-0 flex flex-col justify-center text-center p-6 m-6"
+        >
+            <div
+                class="text-center justify-center flex flex-col m-2 px-12 py-6 bg-gray-200/50 rounded-lg backdrop-blur-xl shadow shadow-black/30"
             >
-        </p>
-        <p>Made using BunJS & Postgres :)</p>
+                <section id="wat" class="flex flex-col">
+                    <h1 class="text-2xl">What is this?</h1>
+                    <span
+                        >This is a downloading system made like the Massgrave
+                        downloading system (which is inspired by the Microsoft
+                        Windows download system, but thats beside the point),
+                        and this project mimics that, but using Bun, React,
+                        Tailwind & Postgres! You can learn more by going to
+                        <a
+                            href="https://yhw.tw/ljads_guide"
+                            target="_blank"
+                            class="duration-300 transform-all text-blue-500 hover:text-blue-300"
+                            >https://yhw.tw/ljads_guide</a
+                        >! I also spun up a testing instence for you to test out
+                        the app, it is Tailwind & Postgres! You can learn more
+                        by going to
+                        <a
+                            href="https://ljads-demo.yuanhau.com/"
+                            target="_blank"
+                            class="duration-300 transform-all text-blue-500 hover:text-blue-300"
+                            >ljads-demo.yuanhau.com</a
+                        ></span
+                    >
+                    <span
+                        >Bonus, this project is fully
+                        <a
+                            href="https://github.com/hpware/download_dynamic.git"
+                            target="_blank"
+                            class="duration-300 transform-all text-blue-500 hover:text-blue-300"
+                            >open source</a
+                        >
+                        and self hostable to your liking!</span
+                    >
+                    <span
+                        >Psst, if you are too lazy, I've made a
+                        <a
+                            href="https://github.com/hpware/download_dynamic.git"
+                            target="_blank"
+                            class="duration-300 transform-all text-blue-500 hover:text-blue-300"
+                        >
+                            Zeabur template</a
+                        >
+                        for easy deployment!
+                    </span>
+                </section>
+            </div>
+        </div>
     </body>
 </html>
