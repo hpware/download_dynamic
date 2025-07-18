@@ -12,7 +12,7 @@ export async function AddFile(path: string, hash: string) {
         ${uuidv4()},
         ${path},
         ${uuidv4()},
-        ${fileNameWithoutExt.toLowerCase()},
+        ${fileNameWithoutExt},
         ${hash}
       )
       ON CONFLICT (path)
