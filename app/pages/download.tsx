@@ -80,7 +80,7 @@ function Page({ fileSQL }: { fileSQL: any }) {
 export default async function Export({ pathname }: { pathname: string }) {
   const findFile = await sql`
     SELECT * FROM file
-    WHERE path = ${pathname}
+    WHERE file_name = ${pathname}
     `;
   if (findFile.length === 0) {
     return (
