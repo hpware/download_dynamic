@@ -21,6 +21,26 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+
+  db-init:
+    image: postgres:16-alpine
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_DB: ${POSTGRES_DB:-downloads}
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    entrypoint:
+      [
+        "sh",
+        "-c",
+        "until pg_isready -h postgres -U $POSTGRES_USER; do sleep 1; done; PGPASSWORD=$POSTGRES_PASSWORD psql -h postgres -U $POSTGRES_USER -d $POSTGRES_DB -f /docker-entrypoint-initdb.d/init.sql",
+      ]
+
   postgres:
     image: postgres:16-alpine
     environment:

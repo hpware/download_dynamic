@@ -31,6 +31,12 @@ psst, if you are on Windows, please install curl and add .exe to each command, o
 curl -O  https://raw.githubusercontent.com/hpware/download_dynamic/refs/heads/master/docker-compose.yml
 ```
 
+### Pull init.sql
+
+```bash
+curl -O  https://raw.githubusercontent.com/hpware/download_dynamic/refs/heads/master/init.sql
+```
+
 ### Pull the anubis config
 
 ```bash
