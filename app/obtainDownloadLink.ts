@@ -42,7 +42,7 @@ export async function getDownloadLink(
     const randomString = generateRandomString(14);
     const storeToDB = await sql`
        INSERT INTO strictdownloadlinkallow (uuid, dlid, client_id, matching_file)
-       VALUE (${uuidv4()}, ${randomString}, ${userid}, ${fileid})
+       VALUES (${uuidv4()}, ${randomString}, ${userid}, ${fileid})
        `;
     return {
       success: true,
@@ -51,6 +51,7 @@ export async function getDownloadLink(
       storeToDB: storeToDB,
     };
   } catch (e) {
+    console.error(e);
     return {
       success: false,
       fail_message: `Server side error. If you are the owner, please submit a GitHub Issue to the repo. Error message: ${e?.message}`,

@@ -10,7 +10,7 @@ export default async function GetFile(
       SELECT * FROM strictdownloadlinkallow
       WHERE matching_file = ${slug1}
       AND dlid = ${slug2}
-      AND created_at < NOW() - INTERVAL '6 hours'
+      AND created_at > NOW() - INTERVAL '6 hours'
       ${process.env.LIMIT_TO_PER_CLIENT === "true" ? sql`AND client_id = ${clientId}` : sql``}
       `;
     if (getDlStuff.length === 0) {

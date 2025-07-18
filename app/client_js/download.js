@@ -19,7 +19,7 @@ async function submitDownloadRequest() {
       console.log(turnstileResponse);
     }
     const req1 = await fetch(
-      `/__dlaction/${currentUserString}/${fileUuid}?captcha=${captchaEnabled}`,
+      `/__dlaction/${currentUserString}/${downloadUuid}?captcha=${captchaEnabled}`,
       {
         method: "POST",
         headers: {
