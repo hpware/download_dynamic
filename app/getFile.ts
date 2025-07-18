@@ -32,7 +32,7 @@ export default async function GetFile(
     }
     return {
       error: false,
-      data: getDlStuffDetails[0].file_name,
+      data: getDlStuffDetails[0].path,
     };
   } catch (e) {
     console.log(e);
