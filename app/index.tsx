@@ -175,11 +175,11 @@ Bun.serve({
         return new Response(fileReturn?.error_text);
       }
 
-      const file = await fs.promises.readFile(`./${fileReturn?.data}`);
-      return new Response(file, {
+      const bunFile = Bun.file(fileReturn.data);
+      return new Response(bunFile, {
         headers: {
           "Content-Type": "application/octet-stream",
-          "Content-Disposition": `attachment; filename="${fileReturn?.data}"`,
+          "Content-Disposition": `attachment; filename="${fileReturn?.data.replace("data/", "")}"`,
         },
       });
     },

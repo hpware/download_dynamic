@@ -31,13 +31,7 @@ psst, if you are on Windows, please install curl and add .exe to each command, o
 curl -O  https://raw.githubusercontent.com/hpware/download_dynamic/refs/heads/master/docker-compose.yml
 ```
 
-### Pull init.sql
-
-```bash
-curl -O  https://raw.githubusercontent.com/hpware/download_dynamic/refs/heads/master/init.sql
-```
-
-### Pull the anubis config
+### Pull the anubis config (If you enable it)
 
 ```bash
 curl https://raw.githubusercontent.com/hpware/download_dynamic/refs/heads/master/anubis_botPolicy.yaml --output botPolicy.yaml
@@ -67,10 +61,29 @@ Add-Content -Path ".env" -Value "POSTGRES_PASSWORD=$base64String"
 Add-Content -Path ".env" -Value "POSTGRES_DB=main"
 ```
 
-If you want to add captchas, this feature is still in beta, add with caution.
+## Add captcha support (Cloudflare Turnstile)
 
 ```bash
 echo ENABLE_CAPTCHA=true >> ./.env
+echo CF_TURNSTILE_SITE_KEY="<<YOUR_SITE_KEY" >> ./.env
+echo CF_TURNSTILE_SECRET_KEY="<<YOUR_TURNSTILE_KEY>>" >> ./.env
+```
+
+## Other Configs
+
+### Add Copyright Info
+```bash
+echo COPYRIGHT_OWNER="<<YOUR_COPYRIGHT_INFO>>" >> ./.env
+```
+
+### Client (per browser) create download request limit (not working)
+```bash
+echo CLIENT_DOWNLOAD_LIMIT=5 >> ./.env
+```
+
+### Limit every download link can only be used at the client that created it.
+```bash
+echo LIMIT_TO_PER_CLIENT=true >> ./.env
 ```
 
 ## BYO INDEX
