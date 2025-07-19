@@ -3,10 +3,13 @@
 </div>
 
 # LJADS
+Introducting LJADS, a awesome easy download system that includes time limits. (And a basic anubis setup to prevent bots, also, you can turn on captchas!)
+
 ## Design files:
 Figma: https://www.figma.com/design/N18ucQnEI1kCp5AeV1mKwD/Untitled?node-id=0-1&t=atxFRlNvtFrmOR8p-1
 
-Introducting LJADS, a awesome easy download system that includes time limits. (And a basic anubis setup to prevent bots, also, you can turn on captchas!)
+## Admin management dashboard system:
+https://github.com/hpware/download_dynamic_admin.git
 
 ## Limitations:
 The max monitor count is `26437` on Debian Linux and `10415` on MacOS
